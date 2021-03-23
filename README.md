@@ -3,11 +3,11 @@
 
 ## Example usage
 
-### Run `apicast_configuration` rules on all the configurations in the must-gather folder
+### Run `apicast_configuration` rules on all the configurations in the must-gather subfolders
 ```
 insights run -p apicast_configuration must-gather.local.12345/
 ```
-### Only selected namespace
+### Only check configurations in the selected namespace folder
 ```
 insights run -p apicast_configuration must-gather.local.12345/[...]/apicast-configs/<namespace>/
 ```

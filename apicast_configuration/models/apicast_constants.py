@@ -9,6 +9,15 @@ ERR_ENABLE_MGMT_API = """
 APICAST_MANAGEMENT_API must be set to `debug` in APIcast in order to fetch the json configuration from the gateway
 """
 ERR_CANT_FIND_CONFIGS = "Unable to find APIcast configurations in the provided path."
+
+FAILED_CONTENT_MAPPING_RULES = """
+Incompatible mapping rules detected: 
+{% for rules in failed %}
+id={{rules[0]['id']}}, pattern={{rules[0]['pattern']}}, service {{rules[0]['proxy_id']}}
+id={{rules[1]['id']}}, pattern={{rules[1]['pattern']}}, Service {{rules[1]['proxy_id']}}
+{% endfor %}
+"""
+
 FAILED_CONTENT = """
 
 Failed Configs:
@@ -20,7 +29,7 @@ Passed Configs:
 {% endfor %}
 
 Ignored Configs:
-{% for npc in parsed_configs %}    {{npc}}
+{% for npc in non_parsed_configs %}    {{npc}}
 {% endfor %}
 """
 PASSED_CONTENT = """
@@ -30,6 +39,6 @@ Passed Configs:
 {% endfor %}
 
 Ignored Configs:
-{% for npc in parsed_configs %}    {{npc}}
+{% for npc in non_parsed_configs %}    {{npc}}
 {% endfor %}
 """

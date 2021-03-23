@@ -3,16 +3,22 @@
 
 from insights.core.plugins import parser, combiner
 from insights.core import Parser
+from insights.core.dr import SkipComponent
+
 from apicast_configuration.models.apicast_configuration_specs import ConfigSpecs
 import apicast_configuration.models.apicast_constants as const
 import apicast_configuration.models.apicast_configuration_utils as config_utils
+
 import json
+import logging
+
+log = logging.getLogger(__name__)
 
 def parse_configs(self, content): 
     self.parsed_config = True
     for config in content :
         if const.MGMT_API_NOT_ENABLED_STR in config :
-            print(const.ERR_ENABLE_MGMT_API)
+            log.error(f"{const.ERR_ENABLE_MGMT_API}")
             self.parsed_config = False
             self.config_content = config
         else : 
