@@ -1,6 +1,6 @@
 from insights.core.plugins import rule, make_pass, make_fail
 from apicast_configuration.models.apicast_configuration_parsers import ApicastConfigurationCombiner
-import apicast_configuration.models.apicast_constants as const
+import apicast_configuration.models.apicast_configuration_constants as const
 import apicast_configuration.models.apicast_configuration_utils as config_utils
 
 CONTENT = {
@@ -12,6 +12,7 @@ CONTENT = {
 def check_mapping_rules(results):
     nonparsed = []
     passed = []
+    failed = {}
     failed = []
 
     content = results.content
@@ -26,7 +27,7 @@ def check_mapping_rules(results):
         else:
             failed_rules = config_utils.check_redundant_rules(config_content)
             if len(failed_rules) > 0:
-                failed = failed_rules
+                failed.append({'name':configname, 'failed_rules': failed_rules})
             else:
                 passed.append(configname)
 

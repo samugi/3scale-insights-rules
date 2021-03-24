@@ -6,7 +6,7 @@ from insights.core import Parser
 from insights.core.dr import SkipComponent
 
 from apicast_configuration.models.apicast_configuration_specs import ConfigSpecs
-import apicast_configuration.models.apicast_constants as const
+import apicast_configuration.models.apicast_configuration_constants as const
 import apicast_configuration.models.apicast_configuration_utils as config_utils
 
 import json
@@ -16,13 +16,18 @@ log = logging.getLogger(__name__)
 
 def parse_configs(self, content): 
     self.parsed_config = True
-    for config in content :
-        if const.MGMT_API_NOT_ENABLED_STR in config :
-            log.error(f"{const.ERR_ENABLE_MGMT_API}")
-            self.parsed_config = False
-            self.config_content = config
-        else : 
-            self.config_content = config_utils.normalize_config(json.loads(config))
+        
+    config_lines = []
+    for line in content :
+        config_lines.append(line)
+    raw_config = "\n".join(config_lines)
+
+    if const.MGMT_API_NOT_ENABLED_STR in raw_config :
+        log.error(f"{const.ERR_ENABLE_MGMT_API}")
+        self.parsed_config = False
+        self.config_content = raw_config
+    else : 
+        self.config_content = config_utils.normalize_config(json.loads(raw_config))
     return
 
 #parse apicast configurations from the namespace folder

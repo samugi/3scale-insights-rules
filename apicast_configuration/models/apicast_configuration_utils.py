@@ -16,21 +16,6 @@ def normalize_config(raw_config):
         return config
     return None
 
-def check_issuers(config):
-    for service in config['services'] :
-        proxy = service['proxy']
-        is_oidc = True if proxy['authentication_method'] == "oidc" else False
-        if is_oidc and not validate_issuer(proxy['oidc_issuer_endpoint'], proxy['oidc_issuer_type']) : 
-            return False
-    return True
-
-def validate_issuer(iss, type):
-    parsed = urlparse(iss)
-    scheme = parsed.scheme
-    netloc = parsed.netloc
-    netloc_ok = netloc != '' if type != "keycloak" else re.match(".+:.+@.+", netloc)
-    return scheme != '' and netloc_ok
-
 def get_rules_by_host(config):
     rules_by_host = {}
     for service in config["services"]:
@@ -41,6 +26,7 @@ def get_rules_by_host(config):
                 host = proxy["sandbox_endpoint"]
             if host not in rules_by_host:
                 rules_by_host[host] = []
+            mapping_rule["host"] = host
             rules_by_host[host].append(mapping_rule)
     return rules_by_host
 
@@ -92,7 +78,7 @@ def rules_are_redundant(rule1, rule2):
     return rules_are_similar(rule1, rule2) and metric1 == metric2
 
 # looks for unnecessary mapping rules (duplicate or matching with same metrics)
-# here we only compare rules that have the same host (same service or path based routing)
+# here we only compare rules that have the same host (same service or different services w/ path based routing)
 # returns a list of invalid rules (incompatible). 
 # Logs warnings for harmless but questionable mapping rules (redundant)
 def check_redundant_rules(config):
@@ -105,5 +91,5 @@ def check_redundant_rules(config):
                 if rules_are_incompatible(rule1, rule2):
                     incompatible_rules.append([rule1, rule2])
                 elif rules_are_redundant(rule1, rule2):
-                    log.warn(f"\nRedundant mapping rules detected: \nid={rule1['id']}, pattern={rule1['pattern']}, service {rule1['proxy_id']}\nid={rule2['id']}, pattern={rule2['pattern']}, Service {rule2['proxy_id']}")
+                    log.warn(f"\nRedundant mapping rules detected: \nid={rule1['id']}, pattern={rule1['pattern']}, service={rule1['proxy_id']}, host={rule1['host']}\nid={rule2['id']}, pattern={rule2['pattern']}, service={rule2['proxy_id']}, host={rule2['host']}")
     return incompatible_rules

@@ -1,5 +1,5 @@
 # 3scale-insights-rules
-[Red Hat Insights tool](https://www.redhat.com/en/technologies/management/insights) rules to troubleshoot 3scale-must-gather reports.
+[Red Hat Insights](https://github.com/RedHatInsights/insights-core) rules to troubleshoot 3scale-must-gather reports.
 
 ## Example usage
 
@@ -10,4 +10,8 @@ insights run -p apicast_configuration must-gather.local.12345/
 ### Only check configurations in the selected namespace folder
 ```
 insights run -p apicast_configuration must-gather.local.12345/[...]/apicast-configs/<namespace>/
+```
+### Run `apicast_logs` rules on all APIcast logs
+```
+insights run -p apicast_logs must-gather.local.12345/
 ```

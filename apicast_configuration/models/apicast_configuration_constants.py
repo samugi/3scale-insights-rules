@@ -12,9 +12,20 @@ ERR_CANT_FIND_CONFIGS = "Unable to find APIcast configurations in the provided p
 
 FAILED_CONTENT_MAPPING_RULES = """
 Incompatible mapping rules detected: 
-{% for rules in failed %}
-id={{rules[0]['id']}}, pattern={{rules[0]['pattern']}}, service {{rules[0]['proxy_id']}}
-id={{rules[1]['id']}}, pattern={{rules[1]['pattern']}}, Service {{rules[1]['proxy_id']}}
+{% for config in failed %}
+Checks failed for config {{config.name}} for the following mapping rules:
+{% for rules in config.failed_rules %}
+    id={{rules[0]['id']}}, pattern={{rules[0]['pattern']}}, service={{rules[0]['proxy_id']}}, host={{rules[0]['host']}}
+    id={{rules[1]['id']}}, pattern={{rules[1]['pattern']}}, service={{rules[1]['proxy_id']}}, host={{rules[1]['host']}}
+{% endfor %}
+{% endfor %}
+
+Passed Configs:
+{% for p in passed_configs %}    {{p}}
+{% endfor %}
+
+Ignored Configs:
+{% for npc in non_parsed_configs %}    {{npc}}
 {% endfor %}
 """
 
