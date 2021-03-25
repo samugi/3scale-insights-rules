@@ -29,20 +29,6 @@ Ignored Configs:
 {% endfor %}
 """
 
-FAILED_CONTENT = """
-
-Failed Configs:
-{% for m in failed %}    {{m}}
-{% endfor %}
-
-Passed Configs:
-{% for p in passed_configs %}    {{p}}
-{% endfor %}
-
-Ignored Configs:
-{% for npc in non_parsed_configs %}    {{npc}}
-{% endfor %}
-"""
 PASSED_CONTENT = """
 
 Passed Configs:

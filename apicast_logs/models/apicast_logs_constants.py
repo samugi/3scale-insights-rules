@@ -12,9 +12,9 @@ FAILED_CONTENT_LOGS_OIDC = """
 
 Failed STAGING log files:
 {% for log_file in failed_staging %}
-    {{log_file.name}} with issuers:
-{% for issuer in log_file.invalid_issuers %}
-        {{issuer}}
+    {{log_file.file_name}}:
+{% for error in log_file.errors %}
+{{log_file.errors[error]}}
 {% endfor %}
 {% endfor %}
 
@@ -24,9 +24,9 @@ Passed STAGING log files:
 
 Failed PRODUCTION log files:
 {% for log_file in failed_production %}
-    {{log_file.name}} with issuers:
-{% for issuer in log_file.invalid_issuers %}
-        {{issuer}}
+    {{log_file.file_name}}:
+{% for error in log_file.errors %}
+{{log_file.errors[error]}}
 {% endfor %}
 {% endfor %}
 

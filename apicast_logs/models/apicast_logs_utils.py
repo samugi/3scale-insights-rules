@@ -5,15 +5,18 @@ import apicast_logs.models.apicast_logs_constants as const
 
 log = logging.getLogger(__name__)
 
-def check_issuers(log_file):
-    invalid_providers = set()
-    for line in log_file:
-        if const.ERR_FAILED_OIDC_PROVIDER in line:
-            provider = re.search('Provider\sfrom\s(.+?)\s', line)
-            invalid_providers.add(provider.group(1))
-    return invalid_providers
+def some_complex_logic(line):
+    return False
 
-def evaluate_oidcs(log_file_contents):
+def check_errors(log_file):
+    error_obj = {}
+    for line in log_file:
+        error = "some error in APIcast..."
+        if some_complex_logic(line):
+            error_obj[error] = "    Some hint related to this error"                
+    return error_obj
+
+def evaluate_logs(log_file_contents):
     failed = []
     passed = []
     for log_file in log_file_contents:
@@ -21,9 +24,9 @@ def evaluate_oidcs(log_file_contents):
         log_file_name = log_file.file_name
         log_file_content = log_file.log_content
 
-        invalid_issuers = check_issuers(log_file_content)
-        if len(invalid_issuers) > 0:
-            failed.append({'name':log_file_path, 'invalid_issuers': invalid_issuers})
+        errors = check_errors(log_file_content)
+        if len(errors) > 0:
+            failed.append({'file_name':log_file_path, 'errors': errors})
         else:
             passed.append(log_file_path) 
     return failed, passed
