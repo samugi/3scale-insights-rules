@@ -3,19 +3,19 @@
 
 ## Examples of usage
 
-### Run `apicast_configuration` rules on all the configurations in the must-gather subfolders
+Run `apicast_configuration` rules on all the configurations in the must-gather subfolders
 ```
 insights run -p apicast_configuration must-gather.local.12345/
 ```
-### Only check configurations in the selected namespace folder
+Only check configurations in the selected namespace folder
 ```
 insights run -p apicast_configuration must-gather.local.12345/[...]/apicast-configs/<namespace>/
 ```
-### Run APIcast logs rules on all APIcast logs
+Run APIcast logs rules on all APIcast logs
 ```
 insights run -p threescale_logs.threescale_logs_apicast must-gather.local.12345/
 ```
-### Run all logs rules at once
+Run all logs rules at once
 ```
 insights run -p threescale_logs must-gather.local.12345/
 ```
